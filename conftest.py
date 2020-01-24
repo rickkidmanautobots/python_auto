@@ -17,7 +17,3 @@ def driver():
 def wait(driver):
     yield WebDriverWait(driver, timeout=10)
 
-
-@pytest.fixture
-def n():
-    yield n

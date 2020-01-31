@@ -23,6 +23,7 @@ def test_copart_makes_categories(driver, wait):
 
     time.sleep(5)
 
+    # Print out all models and totals per model
     listOfRows = driver.find_elements(By.XPATH, '//table[@id="serverSideDataTable"]//tbody//tr//td[6]')
     row = 0
     models = {}
@@ -33,3 +34,61 @@ def test_copart_makes_categories(driver, wait):
     print("")
     count = Counter(models.values())
     print(count)
+
+    # Print out a list of damages and totals per type of damage
+    class Counters:
+        rear = 0
+        front = 0
+        scratch = 0
+        under = 0
+        misc = 0
+
+    listofDamages = driver.find_elements(By.XPATH, '//table[@id="serverSideDataTable"]//tbody//tr//td[12]')
+
+    def rearend():
+        Counters.rear += 1
+        return
+
+    def frontend():
+        Counters.front += 1
+        return
+
+    def minor():
+        Counters.scratch += 1
+        return
+
+    def undercarriage():
+        Counters.under += 1
+        return
+
+    def default():
+        Counters.misc += 1
+        return
+
+    switcher = {
+        1: rearend,
+        2: frontend,
+        3: minor,
+        4: undercarriage
+    }
+
+    def switch(damage):
+        return switcher.get(damage, default)()
+
+    for d in listofDamages:
+        if d.text == "REAR END":
+            switch(1)
+        elif d.text == "FRONT END":
+            switch(2)
+        elif d.text == "MINOR DENT/SCRATCHES":
+            switch(3)
+        elif d.text == "UNDERCARRIAGE":
+            switch(4)
+        else:
+            switch(5)
+
+    print("REAR END : " + str(Counters.rear))
+    print("FRONT END : " + str(Counters.front))
+    print("MINOR DENT/SCRATCHES : " + str(Counters.scratch))
+    print("UNDERCARRIAGE : " + str(Counters.under))
+    print("MISC : " + str(Counters.misc))

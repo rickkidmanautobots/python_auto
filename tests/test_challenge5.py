@@ -66,26 +66,17 @@ def test_copart_makes_categories(driver, wait):
         return
 
     switcher = {
-        1: rearend,
-        2: frontend,
-        3: minor,
-        4: undercarriage
+        "REAR END": rearend,
+        "FRONT END": frontend,
+        "MINOR DENT/SCRATCHES": minor,
+        "UNDERCARRIAGE": undercarriage
     }
 
     def switch(damage):
         return switcher.get(damage, default)()
 
     for d in listofDamages:
-        if d.text == "REAR END":
-            switch(1)
-        elif d.text == "FRONT END":
-            switch(2)
-        elif d.text == "MINOR DENT/SCRATCHES":
-            switch(3)
-        elif d.text == "UNDERCARRIAGE":
-            switch(4)
-        else:
-            switch(5)
+        switch(d.text)
 
     print("REAR END : " + str(Counters.rear))
     print("FRONT END : " + str(Counters.front))

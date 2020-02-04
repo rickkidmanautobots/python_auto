@@ -1,3 +1,5 @@
+from pprint import pprint
+
 import pytest
 import time
 from collections import Counter
@@ -32,8 +34,9 @@ def test_copart_makes_categories(driver, wait):
         row += 1
 
     print("")
+    print("Number of cars by models:")
     count = Counter(models.values())
-    print(count)
+    pprint(count)
 
     # Print out a list of damages and totals per type of damage
     class Counters:
@@ -78,6 +81,8 @@ def test_copart_makes_categories(driver, wait):
     for d in listofDamages:
         switch(d.text)
 
+    print("")
+    print("Number of problems by category:")
     print("REAR END : " + str(Counters.rear))
     print("FRONT END : " + str(Counters.front))
     print("MINOR DENT/SCRATCHES : " + str(Counters.scratch))
